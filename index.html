@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Widecanvas.ai Letterhead</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        @media print {
+            body {
+                print-color-adjust: exact;
+                -webkit-print-color-adjust: exact;
+            }
+            .no-print {
+                display: none;
+            }
+        }
+        .printable-area {
+            width: 21cm;
+            min-height: 29.7cm;
+            padding: 2cm;
+            margin: 0 auto;
+            background-color: white;
+        }
+        [contenteditable="true"] {
+            min-height: 1.5em;
+            border: 1px dashed #e2e8f0;
+            border-radius: 0.25rem;
+            padding: 0.25rem;
+        }
+        [contenteditable="true"]:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+        #letter-content {
+            min-height: 300px;
+            border: 1px dashed #e2e8f0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+        }
+        #letter-content:focus {
+            outline: none;
+            border-color: #4299e1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <div class="max-w-4xl mx-auto p-4 md:p-8">
+        <!-- Print button -->
+        <div class="flex justify-end mb-4 no-print">
+            <button onclick="window.print()" class="bg-blue-600 hover:bg-blue-700 text-white py-2 px-4 rounded-lg shadow transition duration-300 flex items-center">
+                <i class="bi bi-printer mr-2"></i> Print Letterhead
+            </button>
+        </div>
+        
+        <!-- Letterhead -->
+        <div class="printable-area shadow-lg">
+            <header class="mb-12">
+                <!-- Logo -->
+                <div class="flex justify-start items-center mb-6">
+                    <img src="https://firebasestorage.googleapis.com/v0/b/widecanvas-d0dd4.appspot.com/o/logos%2F1000067612.png?alt=media&token=4092e230-afed-4c85-b9a6-79f4f808ded3" alt="Widecanvas.ai Logo" class="h-16">
+                </div>
+                
+                <!-- Contact information -->
+                <div class="flex flex-col md:flex-row justify-between py-4 border-t border-b border-gray-200 text-sm text-gray-600">
+                    <div class="flex items-center mb-2 md:mb-0">
+                        <span>contact@widecanvas.ai</span>
+                    </div>
+                    <div class="flex items-center mb-2 md:mb-0">
+                        <span>8918902093</span>
+                    </div>
+                    <div class="flex items-center mb-2 md:mb-0">
+                        <span>widecanvas.ai</span>
+                    </div>
+                    <div class="flex items-center">
+                        <span>123 AI Avenue, Tech City</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Reference information -->
+            <div class="flex justify-end mb-12">
+                <div class="text-right">
+                    <p class="text-gray-600">Date: <span id="current-date"></span></p>
+                </div>
+            </div>
+
+            <!-- Content Area -->
+            <main class="mb-12">
+                <p class="text-gray-800 mb-4">Dear <span contenteditable="true" class="inline-block min-w-32">____________________</span>,</p>
+                
+                <div contenteditable="true" id="letter-content" class="mb-4">
+                    <p>Your letter content will appear here</p>
+                </div>
+
+                <p class="text-gray-800 mb-2">Thank you,</p>
+                <p class="font-semibold text-gray-800 mb-8" contenteditable="true">____________________</p>
+            </main>
+
+            <!-- Footer -->
+            <footer class="mt-16 pt-4 border-t border-gray-200">
+                <div class="flex flex-col md:flex-row justify-between text-sm text-gray-600">
+                    <p>Widecanvas.ai</p>
+                    <p>© <span id="current-year"></span> All Rights Reserved</p>
+                </div>
+            </footer>
+        </div>
+        
+        <!-- Document controls -->
+        <div class="mt-6 p-4 bg-white rounded-lg shadow-md no-print">
+            <h2 class="text-lg font-semibold mb-4 text-gray-800">Document Settings</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                    <label for="date-input" class="block text-sm font-medium text-gray-700 mb-1">Custom Date:</label>
+                    <input type="date" id="date-input" class="w-full p-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
+                <div class="flex items-end">
+                    <button onclick="updateDate()" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-md transition duration-300">
+                        Update Document
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Set current date and year
+        const now = new Date();
+        const formattedDate = now.toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+        
+        document.getElementById('current-date').textContent = formattedDate;
+        document.getElementById('current-year').textContent = now.getFullYear();
+        
+        // Set today's date as default in the date input
+        const today = now.toISOString().substr(0, 10);
+        document.getElementById('date-input').value = today;
+        
+        // Function to update date
+        function updateDate() {
+            const dateInput = document.getElementById('date-input').value;
+            if (dateInput) {
+                const customDate = new Date(dateInput);
+                const formattedCustomDate = customDate.toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric'
+                });
+                document.getElementById('current-date').textContent = formattedCustomDate;
+            }
+        }
+        
+        // Clear the letter content when clicked for the first time
+        const letterContent = document.getElementById('letter-content');
+        letterContent.addEventListener('focus', function() {
+            if (this.textContent.trim() === 'Your letter content will appear here') {
+                this.textContent = '';
+            }
+        }, { once: true });
+    </script>
+<script>document.body.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); return }, { passive: false })</script>
+	</body>
+</html>
